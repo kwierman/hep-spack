@@ -46,7 +46,6 @@ class Root(Package):
     variant('graphviz', default=False, description='Enable graphviz support')
 
     depends_on("cmake", type='build')
-    depends_on("libtool", type='build')
     depends_on("pcre")
     depends_on("fftw~mpi")
     depends_on("graphviz", when="+graphviz")
@@ -55,6 +54,7 @@ class Root(Package):
     depends_on("libxml2+python")
     depends_on("jpeg")
     if sys.platform != 'darwin':
+        depends_on("libtool", type='build')
         depends_on("libpng")
         depends_on("openssl")
         depends_on("freetype")
@@ -88,6 +88,9 @@ class Root(Package):
         spack_env.set('ROOTSYS', self.prefix)
         spack_env.set('ROOT_VERSION', 'v6')
         spack_env.prepend_path('PYTHONPATH', self.prefix.lib)
+        run_env.set('ROOTSYS', self.prefix)
+        run_env.set('ROOT_VERSION', 'v6')
+        run_env.prepend_path('PYTHONPATH', self.prefix.lib)
 
     def url_for_version(self, version):
         """Handle ROOT's unusual version string."""
